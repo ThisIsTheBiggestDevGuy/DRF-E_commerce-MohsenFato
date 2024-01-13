@@ -1,0 +1,13 @@
+
+
+services:
+  postgres:
+    image: postgres:latest
+    restart: no
+    environment:
+      POSTGRES_DB: "django.db.backends.postgresql"
+      POSTGRES_USER: "bigboss1"
+      POSTGRES_PASSWORD: "fuckserverside1"
+    ports:
+      - "5432:5432"
+
