@@ -2,8 +2,9 @@
 from .models import Post, Category, Attribute
 from postsapp.serializers import PostSerializer, CategorySerializer
 # Create your views here.
+from rest_framework.response import Response
 from django.core.exceptions import PermissionDenied
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, AllowAny
 from .permissions import IsOwnerOrReadOnly
 from django.db.models import Q
@@ -47,10 +48,10 @@ class PostListCreateView(generics.ListCreateAPIView):
                 return [attribute.name for attribute in attributes]
             except Category.DoesNotExist:
                 # The case where the category doesn't exist
-                return []
+                return Response({'error': 'Category not found'}, status=status.HTTP_404_NOT_FOUND)
             except Attribute.DoesNotExist:
                 # The case where there are no attributes for the category
-                return []
+                return Response({'message': 'No attributes found for the category'}, status=status.HTTP_200_OK)
         category_attributes = get_category_attributes(category_id)
 
         if category_id:
