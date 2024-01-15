@@ -1,6 +1,6 @@
 
-from .models import Post, Category, Attribute
-from postsapp.serializers import PostSerializer, CategorySerializer
+from .models import Post, Category, Attribute, Chat
+from postsapp.serializers import PostSerializer, CategorySerializer, ChatSerializer
 # Create your views here.
 from rest_framework.response import Response
 from django.core.exceptions import PermissionDenied
@@ -24,6 +24,11 @@ class PostListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         # Set the user field during post creation
         if self.request.user.is_authenticated:
+            serializer.save(user=self.request.user)
+            # check if user wants to hide phone number
+            hide_phone_number = self.request.data.get('hide_phone_number', False)
+            if hide_phone_number:
+                serializer.validated_data['phone_number'] = None
             serializer.save(user=self.request.user)
         else:
             raise PermissionDenied("Not allowed")
@@ -71,3 +76,12 @@ class PostRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+
+class ChatListCreateView(generics.ListCreateAPIView):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(sender=self.request.user)

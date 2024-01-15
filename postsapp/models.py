@@ -28,7 +28,8 @@ class Post(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-
+    hide_phone_number = models.BooleanField(default=False)
+    phone_number = models.IntegerField(max_length=14, blank=True, null=True)
 
 class AttributeValue(models.Model):
     post = models.ForeignKey(Post, related_name='attribute_values', on_delete=models.CASCADE)
@@ -37,5 +38,12 @@ class AttributeValue(models.Model):
 
     class Meta:
         unique_together = ('post', 'attribute')  # Ensure a post has only one value for each attribute
+class Chat(models.Model):
+    post = models.ForeignKey(Post, related_name='chats', on_delete=models.CASCADE)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    message = models.TextField(blank=False, null=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f'{self.sender.username} - {self.timestamp}'
 
 

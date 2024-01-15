@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from postsapp.views import ChatListCreateView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api1/', include('postsapp.urls')),
     path('api2/', include('usersapp.urls')),
+    path('api3/chats/', ChatListCreateView.as_view(), name='chat-list-create'),
 ]
