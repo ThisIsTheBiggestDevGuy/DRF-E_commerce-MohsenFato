@@ -29,7 +29,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     hide_phone_number = models.BooleanField(default=False)
-    phone_number = models.IntegerField(max_length=14, blank=True, null=True)
+    phone_number = models.TextField(max_length=14, blank=True, null=True)
 
 
 class AttributeValue(models.Model):
