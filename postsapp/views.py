@@ -85,3 +85,10 @@ class ChatListCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(sender=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        # include chats in the response
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        chats_serializer = ChatSerializer(Chat.objects.all(), many=True)
+        return Response({'posts': serializer.data, 'chats': chats_serializer.data})
