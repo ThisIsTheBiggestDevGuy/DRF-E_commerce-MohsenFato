@@ -1,4 +1,9 @@
-from .serializers import ObtainAuthTokenSerializer, CustomUserSerializer
+from .models import SellerProfile, SellerReview
+from .serializers import (ObtainAuthTokenSerializer,
+                          CustomUserSerializer,
+                          SellerReviewSerializer,
+                          SellerProfileSerializer
+                          )
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status, views
@@ -37,4 +42,24 @@ class RegisterUserView(generics.CreateAPIView):
         return Response({'token': token.key,
                          'user_id': user.pk,
                          'username': user.username}, status=status.HTTP_201_CREATED)
+
+
+class SellerProfileDetailView(generics.RetrieveAPIView):
+    queryset = SellerProfile.objects.all()
+    serializer_class = SellerProfileSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+
+class SellerReviewCreateView(generics.CreateAPIView):
+    queryset = SellerReview.objects.all()
+    serializer_class = SellerReviewSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        seller_profile = generics.get_object_or_404(SellerProfile, user=self.request.user)
+        serializer.save(reviewer=self.request.user, seller=seller_profile)
+        seller_profile.total_reviews += 1
+        seller_profile.total_ratings += serializer.validated_data['rating']
+        seller_profile.average_rating = seller_profile.total_ratings / seller_profile.total_reviews
+        seller_profile.save()
 
