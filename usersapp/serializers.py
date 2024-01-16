@@ -36,13 +36,15 @@ class CustomUserSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class SellerProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = SellerProfile
-        fields = '__all__'
-
-
 class SellerReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = SellerReview
         fields = '__all__'
+
+
+class SellerProfileSerializer(serializers.ModelSerializer):
+    reviews = SellerReviewSerializer
+    class Meta:
+        model = SellerProfile
+        fields = '__all__'
+
