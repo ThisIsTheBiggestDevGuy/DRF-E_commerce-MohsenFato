@@ -92,3 +92,4 @@ class ChatListCreateView(generics.ListCreateAPIView):
         serializer = self.get_serializer(queryset, many=True)
         chats_serializer = ChatSerializer(Chat.objects.all(), many=True)
         return Response({'posts': serializer.data, 'chats': chats_serializer.data})
+
