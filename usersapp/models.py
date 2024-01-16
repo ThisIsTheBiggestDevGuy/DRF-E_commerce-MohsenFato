@@ -24,6 +24,11 @@ class SellerProfile(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
 
+    # fields related to reviews and ratings
+    total_reviews = models.PositiveIntegerField(default=0)
+    total_ratings = models.PositiveIntegerField(default=0)
+    average_rating = models.FloatField(default=0.0)
+
     def __str__(self):
         return self.user.username
 
