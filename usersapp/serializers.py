@@ -1,7 +1,7 @@
 
 from django.contrib.auth import get_user_model, authenticate, hashers
 from rest_framework import serializers
-from .models import CustomUser, SellerProfile
+from .models import CustomUser, SellerProfile, SellerReview
 
 
 class ObtainAuthTokenSerializer(serializers.Serializer):
@@ -41,3 +41,8 @@ class SellerProfileSerializer(serializers.ModelSerializer):
         model = SellerProfile
         fields = '__all__'
 
+
+class SellerReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SellerReview
+        fields = '__all__'
