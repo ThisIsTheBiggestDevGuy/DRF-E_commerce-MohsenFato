@@ -32,3 +32,11 @@ class SellerProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class SellerReview(models.Model):
+    seller = models.ForeignKey(SellerProfile, on_delete=models.CASCADE, related_name='reviews')
+    reviewer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField()
+    comment = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f"{self.reviewer.username} | {self.se}"
