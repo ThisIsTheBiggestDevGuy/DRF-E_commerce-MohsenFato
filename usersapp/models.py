@@ -41,4 +41,4 @@ class SellerReview(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.reviewer.username} | {self.se}"
+        return f"{self.reviewer.username} | {self.seller.user.username}"
