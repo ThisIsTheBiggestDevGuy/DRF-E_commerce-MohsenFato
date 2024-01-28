@@ -18,11 +18,11 @@ class CustomUser(AbstractUser):
 
 class SellerProfile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='seller_profile')
-    contact_info = models.TextField(null=True, blank=True)
+    contact_info = models.TextField(null=False, blank=False, default="Contact info Required")
     seller_groups = models.ManyToManyField(Group, related_name='seller_profile', blank=True)
     seller_user_permissions = models.ManyToManyField(Permission, related_name='seller_profile_permissions', blank=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
-    bio = models.TextField(null=True, blank=True)
+    bio = models.TextField(null=False, blank=False, default="Bio Required")
 
     # fields related to reviews and ratings
     total_reviews = models.PositiveIntegerField(default=0)
