@@ -2,7 +2,7 @@ from .models import SellerProfile, SellerReview
 from .serializers import (ObtainAuthTokenSerializer,
                           CustomUserSerializer,
                           SellerReviewSerializer,
-                          SellerProfileSerializer
+                          SellerProfileSerializer, CreateSellerProfileSerializer
                           )
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -63,3 +63,14 @@ class SellerReviewCreateView(generics.CreateAPIView):
         seller_profile.average_rating = seller_profile.total_ratings / seller_profile.total_reviews
         seller_profile.save()
 
+class CreateSellerProfileView(generics.CreateAPIView):
+    queryset = SellerProfile.objects.all()
+    serializer_class = CreateSellerProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        user_profile = SellerProfile.objects.get(user=self.request.user)
+        # Checking to see if the user already has a seller profile
+        if user_profile:
+            raise serializer.ValidationError("seller profile already exists for this user")
+        serializer.save(user=self.request.user)
