@@ -48,3 +48,7 @@ class SellerProfileSerializer(serializers.ModelSerializer):
         model = SellerProfile
         fields = '__all__'
 
+class CreateSellerProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SellerProfile
+        fields = ['contact_info', 'bio']
