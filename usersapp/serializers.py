@@ -39,11 +39,12 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class SellerReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = SellerReview
-        fields = '__all__'
+        fields = ['rating', 'comment']
+        read_only_fields = ['seller', 'reviewer']
 
 
 class SellerProfileSerializer(serializers.ModelSerializer):
-    reviews = SellerReviewSerializer
+    reviews = SellerReviewSerializer(many=True, read_only=True)
 
     class Meta:
         model = SellerProfile
