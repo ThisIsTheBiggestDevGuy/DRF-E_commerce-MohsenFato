@@ -44,9 +44,11 @@ class SellerReviewSerializer(serializers.ModelSerializer):
 
 class SellerProfileSerializer(serializers.ModelSerializer):
     reviews = SellerReviewSerializer
+
     class Meta:
         model = SellerProfile
         fields = '__all__'
+
 
 class CreateSellerProfileSerializer(serializers.ModelSerializer):
     class Meta:

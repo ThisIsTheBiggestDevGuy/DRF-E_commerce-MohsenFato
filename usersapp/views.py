@@ -1,4 +1,5 @@
 from .models import SellerProfile, SellerReview
+from rest_framework import serializers
 from .serializers import (ObtainAuthTokenSerializer,
                           CustomUserSerializer,
                           SellerReviewSerializer,
@@ -63,14 +64,19 @@ class SellerReviewCreateView(generics.CreateAPIView):
         seller_profile.average_rating = seller_profile.total_ratings / seller_profile.total_reviews
         seller_profile.save()
 
+
 class CreateSellerProfileView(generics.CreateAPIView):
     queryset = SellerProfile.objects.all()
     serializer_class = CreateSellerProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        user_profile = SellerProfile.objects.get(user=self.request.user)
-        # Checking to see if the user already has a seller profile
+        # Checking if the user already has a seller profile
+        user_profile = SellerProfile.objects.filter(user=self.request.user).first()
+
         if user_profile:
-            raise serializer.ValidationError("seller profile already exists for this user")
+            # If profile already exists, return a message or an error as needed
+            return Response({"detail": "Seller profile already exists for this user."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # If the profile doesn't exist, create a new one
         serializer.save(user=self.request.user)
