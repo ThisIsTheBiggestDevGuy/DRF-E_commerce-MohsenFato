@@ -114,3 +114,43 @@ response = requests.request("DELETE", url, headers=headers, data=payload)
 print(response.text)
 
 # End of deleting post test
+
+# chat creation test
+import requests
+import json
+
+url = "http://localhost:8000/api3/chats/"
+
+payload = json.dumps({
+  "sender": 9,
+  "post": 2,
+  "message": "Hello, I'm interested in this post."
+})
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Token f3e90bea66ec0c8ba05d9ec5d6c956695326c3e2'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
+# end of chat creation test
+
+# chats listing test
+import requests
+import json
+
+url = "http://localhost:8000/api3/chats/"
+
+payload = ""
+headers = {
+  'Content-Type': 'application/json',
+  'Authorization': 'Token f3e90bea66ec0c8ba05d9ec5d6c956695326c3e2'
+}
+
+response = requests.request("GET", url, headers=headers, data=payload)
+
+print(response.text)
+
+# end of chat listing test
