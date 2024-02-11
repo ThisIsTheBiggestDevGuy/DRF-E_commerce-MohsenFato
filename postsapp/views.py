@@ -1,7 +1,6 @@
 
 from .models import Post, Category, Attribute, Chat
 from postsapp.serializers import PostSerializer, CategorySerializer, ChatSerializer
-# Create your views here.
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from django.core.exceptions import PermissionDenied
@@ -36,9 +35,9 @@ class PostListCreateView(generics.ListCreateAPIView):
         category_id = self.request.query_params.get('category_id', None)
 
         if category_id:
-            # Use the get_category_attributes method to fetch attributes
+            # fetching attributes
             category_attributes = self.get_category_attributes(category_id)
-            # Loop through the category attributes and apply filters
+            # Looping through the category attributes and applying filters
             for attribute in category_attributes:
                 attribute_name = attribute.name
                 attribute_value = self.request.query_params.get(attribute_name, None)
@@ -54,16 +53,16 @@ class PostListCreateView(generics.ListCreateAPIView):
         return attributes
 
     def perform_create(self, serializer):
-        # Set the user field during post creation
+        # Setting the user field during post creation
         if self.request.user.is_authenticated:
             serializer.save(user=self.request.user)
-            # Check if the user wants to hide the phone number
+            # Checking the phone number public Visibility
             hide_phone_number = self.request.data.get('hide_phone_number', False)
             if hide_phone_number:
                 serializer.validated_data['phone_number'] = None
             serializer.save(user=self.request.user)
 
-            # Fetch and include category attributes in the response
+            # Fetching and including category attributes in the response
             category_id = self.request.data.get('category', None)
             if category_id:
                 category_attributes = self.get_category_attributes(category_id)
@@ -88,7 +87,7 @@ class ChatListCreateView(generics.ListCreateAPIView):
         serializer.save(sender=self.request.user)
 
     def list(self, request, *args, **kwargs):
-        # include chats in the response
+        # including chats in the response
         queryset = self.get_queryset()
         serializer = self.get_serializer(queryset, many=True)
         chats_serializer = ChatSerializer(Chat.objects.all(), many=True)

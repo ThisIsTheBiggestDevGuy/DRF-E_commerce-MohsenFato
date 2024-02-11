@@ -38,7 +38,7 @@ class AttributeValue(models.Model):
     value = models.CharField(max_length=255)
 
     class Meta:
-        unique_together = ('post', 'attribute')  # Ensure a post has only one value for each attribute
+        unique_together = ('post', 'attribute')  # Ensuring a post has only one value for each attribute
 
 
 class Chat(models.Model):

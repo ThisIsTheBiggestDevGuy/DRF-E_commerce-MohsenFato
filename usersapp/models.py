@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Permission, Group
 from rest_framework.authtoken.models import Token
-# Create your models here.
 
 
 class CustomUser(AbstractUser):

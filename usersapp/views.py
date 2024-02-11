@@ -9,7 +9,6 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework import generics, permissions, status, views
 from django.contrib.auth import get_user_model
-# Create your views here.
 
 
 class LoginView(views.APIView):
@@ -26,7 +25,7 @@ class LoginView(views.APIView):
 
 
 class RegisterUserView(generics.CreateAPIView):
-    # Register new users
+    # Registering new users
     queryset = get_user_model().objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [permissions.AllowAny]
@@ -34,7 +33,7 @@ class RegisterUserView(generics.CreateAPIView):
     def perform_create(self, serializer):
         username = serializer.validated_data['username']
 
-        # Check if the username already exists
+        # Checking if the username already exists
         if get_user_model().objects.filter(username=username).exists():
             return Response({'error': 'A user with that username already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -75,8 +74,8 @@ class CreateSellerProfileView(generics.CreateAPIView):
         user_profile = SellerProfile.objects.filter(user=self.request.user).first()
 
         if user_profile:
-            # If profile already exists, return a message or an error as needed
+            # returning the needed message or error, If profile already exists
             return Response({"detail": "Seller profile already exists for this user."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # If the profile doesn't exist, create a new one
+        # creating a new one, If the profile doesn't exist
         serializer.save(user=self.request.user)
