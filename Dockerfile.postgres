@@ -1,0 +1,7 @@
+
+FROM postgres:latest
+
+
+ENV POSTGRES_DB=e_commerce
+ENV POSTGRES_USER=bigboss1
+ENV POSTGRES_PASSWORD=fuckserverside1
